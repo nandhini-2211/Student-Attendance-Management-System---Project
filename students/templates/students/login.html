@@ -1,0 +1,274 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Student Management System</title>
+
+    <link rel="stylesheet" href="{% static 'students/style.css' %}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, #e0e7ff 0, transparent 40%),
+                linear-gradient(135deg, #f8fafc, #eef2ff);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            background: #ffffff;
+            border: 1px solid #e8eaf5;
+            border-radius: 20px;
+            box-shadow: 0 20px 55px rgba(30, 41, 59, 0.10);
+        }
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            border-radius: 16px;
+            background: #4f46e5;
+            color: #ffffff;
+            font-size: 25px;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(79, 70, 229, 0.25);
+        }
+
+        .login-brand h1 {
+            margin: 0 0 10px;
+            color: #172033;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .login-subtitle {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .login-card form {
+            margin-top: 25px;
+        }
+
+        .login-card form p {
+            margin: 0 0 20px;
+        }
+
+        .login-card label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .login-card input {
+            display: block;
+            width: 100%;
+            min-height: 46px;
+            padding: 12px 14px;
+            border: 1px solid #dbe1ec;
+            border-radius: 10px;
+            background: #fbfcff;
+            color: #172033;
+            font-size: 15px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .login-card input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        .login-card input::placeholder {
+            color: #94a3b8;
+        }
+
+        .login-card button {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .login-card button:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .login-card button:focus-visible,
+        .login-links a:focus-visible {
+            outline: 3px solid #a5b4fc;
+            outline-offset: 3px;
+        }
+
+        .login-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 26px;
+            padding-top: 22px;
+            border-top: 1px solid #eef0f6;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .login-links a {
+            color: #4f46e5;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-links a:hover {
+            color: #3730a3;
+            text-decoration: underline;
+        }
+
+        .forgot-link {
+            font-size: 13px;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            padding-left: 18px;
+            color: #dc2626;
+            font-size: 13px;
+        }
+
+        .login-message {
+            padding: 12px 14px;
+            margin: 15px 0;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .login-message.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .login-message.success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .login-message.warning {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .login-message.info {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+
+            .login-card {
+                padding: 28px 22px;
+                border-radius: 16px;
+            }
+
+            .login-brand h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="login-card">
+
+        <div class="login-brand">
+            <div class="login-logo">S</div>
+
+            <h1>Welcome Back!</h1>
+
+            <p class="login-subtitle">
+                Sign in to your Student Management System
+            </p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="login-message
+                    {% if 'error' in message.tags %}error
+                    {% elif 'success' in message.tags %}success
+                    {% elif 'warning' in message.tags %}warning
+                    {% else %}info{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        <div class="login-links">
+            <div>
+                Don't have an account?
+                <a href="{% url 'register' %}">Create an account</a>
+            </div>
+
+            <a class="forgot-link" href="{% url 'password_reset' %}">
+                Forgot your password?
+            </a>
+        </div>
+
+    </main>
+</body>
+</html>

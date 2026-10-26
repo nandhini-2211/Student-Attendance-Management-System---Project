@@ -1,0 +1,189 @@
+
+{% extends "students/base.html" %}
+
+{% block title %}Dashboard - Student Management System{% endblock %}
+
+{% block page_heading %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Dashboard heading -->
+<div class="dashboard-header">
+    <div>
+        <h1>Welcome to StudentHub</h1>
+        <p class="subtitle">
+            Here's an overview of your student records.
+        </p>
+    </div>
+
+    <div class="header-actions">
+        <a href="{% url 'student_list' %}" class="nav-button">
+            View Students
+        </a>
+
+        {% if request.user.is_staff %}
+        <a href="{% url 'add_student' %}" class="nav-button add-button">
+            + Add Student
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Statistics cards -->
+<div class="dashboard-cards">
+
+    <div class="dashboard-card">
+        <h3>Total Students</h3>
+        <p>{{ total_students }}</p>
+    </div>
+
+    <div class="dashboard-card department-card">
+        <h3>Total Departments</h3>
+        <p>{{ total_departments }}</p>
+    </div>
+
+</div>
+
+<!-- Department statistics -->
+<div class="section">
+    <h2>Students by Department</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Total Students</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in department_counts %}
+                <tr>
+                    <td>{{ item.department }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="empty-message">
+                        No departments available.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Recently added students -->
+<div class="section">
+    <h2>Recently Added Students</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Date Added</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in recent_students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.department }}</td>
+                    <td>{{ student.created_at|date:"d M Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-message">
+                        No students registered yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Department chart -->
+<div class="section">
+    <h2>Department-wise Student Chart</h2>
+
+    <div style="position: relative; height: 320px; width: 100%;">
+        <canvas id="departmentChart"></canvas>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ department_counts|json_script:"department-data" }}
+
+<script>
+    const departmentData = JSON.parse(
+        document.getElementById("department-data").textContent
+    );
+
+    const departmentLabels = departmentData.map(
+        item => item.department
+    );
+
+    const studentTotals = departmentData.map(
+        item => item.total
+    );
+
+    const chartCanvas = document.getElementById("departmentChart");
+
+    if (chartCanvas) {
+        new Chart(chartCanvas, {
+            type: "bar",
+
+            data: {
+                labels: departmentLabels,
+                datasets: [{
+                    label: "Number of Students",
+                    data: studentTotals,
+                    backgroundColor: [
+                        "#4f46e5",
+                        "#0f766e",
+                        "#f59e0b",
+                        "#9333ea",
+                        "#ef4444",
+                        "#0891b2"
+                    ],
+                    borderRadius: 6
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+{% endblock %}

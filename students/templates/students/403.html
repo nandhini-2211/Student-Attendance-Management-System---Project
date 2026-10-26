@@ -1,0 +1,124 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Access Denied | Student Management System</title>
+
+    <link rel="stylesheet" href="{% static 'students/style.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .header {
+            background: #1e3a5f;
+            color: white;
+            padding: 22px 35px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .access-container {
+            max-width: 750px;
+            margin: 70px auto;
+            padding: 50px 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .lock-icon {
+            font-size: 75px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #15366b;
+            font-size: 42px;
+            margin: 15px 0;
+        }
+
+        .main-message {
+            font-size: 20px;
+            color: #475569;
+            margin-bottom: 25px;
+        }
+
+        .details {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #0d9488;
+            color: white;
+            padding: 14px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #0f766e;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 18px;
+                font-size: 20px;
+            }
+
+            .access-container {
+                margin: 30px 15px;
+                padding: 35px 20px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        🎓 Student Management System
+    </div>
+
+    <div class="access-container">
+
+        <div class="lock-icon">🔒</div>
+
+        <h1>Access Denied</h1>
+
+        <p class="main-message">
+            You don't have permission to access this page.
+        </p>
+
+        <div class="details">
+            This area is restricted to administrators only.<br>
+            Please contact your administrator if you believe this is a mistake.
+        </div>
+
+        <a href="{% url 'student_list' %}" class="back-button">
+            ← Back to Student List
+        </a>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Student Management System{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'students/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">S</div>
+                <div>
+                    <h2>StudentHub</h2>
+                    <p>Management Portal</p>
+                </div>
+            </div>
+
+            <p class="sidebar-label">MAIN MENU</p>
+
+            <nav class="sidebar-nav">
+
+                <a href="{% url 'dashboard' %}" class="sidebar-link">
+                    <span class="nav-icon">▦</span>
+                    Dashboard
+                </a>
+
+                <a href="{% url 'student_list' %}" class="sidebar-link">
+                    <span class="nav-icon">♙</span>
+                    Students
+                </a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'take_attendance' %}" class="sidebar-link">
+                        <span class="nav-icon">✓</span>
+                        Take Attendance
+                    </a>
+
+                    <a href="{% url 'attendance_history' %}" class="sidebar-link">
+                        <span class="nav-icon">▤</span>
+                        Attendance History
+                    </a>
+                {% endif %}
+
+                {% if request.user.is_staff %}
+
+                    <a href="{% url 'add_student' %}" class="sidebar-link">
+                        <span class="nav-icon">＋</span>
+                        Add Student
+                    </a>
+
+                    <p class="sidebar-label">ADMINISTRATION</p>
+
+                    <a href="{% url 'user_management' %}" class="sidebar-link">
+                        <span class="nav-icon">♧</span>
+                        Manage Users
+                    </a>
+
+                    <a href="{% url 'import_students' %}" class="sidebar-link">
+                        <span class="nav-icon">⇧</span>
+                        Import Students
+                    </a>
+
+                    <a href="{% url 'export_students_csv' %}" class="sidebar-link">
+                        <span class="nav-icon">⇩</span>
+                        Export CSV
+                    </a>
+
+                    <a href="{% url 'export_students_excel' %}" class="sidebar-link">
+                        <span class="nav-icon">▤</span>
+                        Export Excel
+                    </a>
+
+                    <!-- Export Attendance - Admin Only -->
+                    <a href="{% url 'export_attendance_excel' %}" class="sidebar-link">
+                        <span class="nav-icon">📊</span>
+                        Export Attendance
+                    </a>
+
+                {% endif %}
+            </nav>
+
+            <!-- User options -->
+            <div class="sidebar-bottom">
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'change_password' %}" class="sidebar-link">
+                        <span class="nav-icon">🔐</span>
+                        Change Password
+                    </a>
+
+                    <div class="user-summary">
+                        <div class="user-avatar">
+                            {{ request.user.username|first|upper }}
+                        </div>
+
+                        <div class="user-info">
+                            <strong>{{ request.user.username }}</strong>
+                            <span>
+                                {% if request.user.is_staff %}
+                                    Administrator
+                                {% else %}
+                                    Student Portal User
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="sidebar-logout">
+                            ↪ Logout
+                        </button>
+                    </form>
+                {% endif %}
+
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-title-group">
+                    <p class="topbar-label">
+                        <span class="topbar-label-dot"></span>
+                        STUDENT MANAGEMENT SYSTEM
+                    </p>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <div class="topbar-user">
+                        <div class="user-avatar">
+                            {{ request.user.username|first|upper }}
+                        </div>
+                        <span>{{ request.user.username }}</span>
+                    </div>
+                {% endif %}
+            </header>
+
+            <!-- Page content -->
+            <section class="page-content">
+
+                {% if messages %}
+                    <div class="messages-container">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+
+            </section>
+        </main>
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

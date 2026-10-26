@@ -1,0 +1,189 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Profile</title>
+
+    <link rel="stylesheet"
+          href="{% static 'students/style.css' %}">
+
+    <style>
+        .profile-container {
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .profile-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .profile-header h1 {
+            margin: 0 0 8px;
+            color: #1e293b;
+        }
+
+        .profile-header p {
+            color: #64748b;
+            margin: 0;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        .detail-item {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .detail-item .label {
+            display: block;
+            margin-bottom: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .detail-item .value {
+            color: #1e293b;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .profile-actions a {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+        }
+
+        .edit-btn {
+            background: #2563eb;
+        }
+
+        .back-btn {
+            background: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            .profile-container {
+                margin: 20px 10px;
+                padding: 20px;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="profile-container">
+
+        <div class="profile-header">
+
+            <div class="profile-icon">
+                {{ student.name|first|upper }}
+            </div>
+
+            <h1>{{ student.name }}</h1>
+
+            <p>Student Profile</p>
+
+        </div>
+
+        <div class="profile-details">
+
+            <div class="detail-item">
+                <span class="label">Student ID</span>
+                <span class="value">{{ student.id }}</span>
+            </div>
+
+            <div class="detail-item">
+                <span class="label">Full Name</span>
+                <span class="value">{{ student.name }}</span>
+            </div>
+
+            <div class="detail-item">
+                <span class="label">Email Address</span>
+                <span class="value">{{ student.email }}</span>
+            </div>
+
+            <div class="detail-item">
+                <span class="label">Age</span>
+                <span class="value">{{ student.age }} years</span>
+            </div>
+
+            <div class="detail-item">
+                <span class="label">Department</span>
+                <span class="value">{{ student.department }}</span>
+            </div>
+
+            <div class="detail-item">
+                <span class="label">Date Added</span>
+                <span class="value">
+                    {{ student.created_at|date:"d M Y" }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="profile-actions">
+
+            <a href="{% url 'edit_student' student.id %}"
+               class="edit-btn">
+                Edit Student
+            </a>
+
+            <a href="{% url 'student_list' %}"
+               class="back-btn">
+                Back to Students
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

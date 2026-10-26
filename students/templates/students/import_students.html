@@ -1,0 +1,122 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Students from Excel</title>
+    <link rel="stylesheet" href="{% static 'students/style.css' %}">
+
+    <style>
+        .import-card {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .import-card h1 {
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .import-card p {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .import-card input[type="file"] {
+            display: block;
+            width: 100%;
+            margin: 20px 0;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .import-btn {
+            background: #16a34a;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-left: 8px;
+            background: #64748b;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .message {
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 8px;
+            background: #f1f5f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="import-card">
+
+            <h1>Import Students from Excel</h1>
+
+            <p>
+                Upload an Excel file (.xlsx) containing student information.
+            </p>
+
+            <p>
+                <strong>Required columns:</strong>
+                Name, Email, Age, Department
+            </p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST"
+                  enctype="multipart/form-data"
+                  action="{% url 'import_students' %}">
+
+                {% csrf_token %}
+
+                <label for="excel_file">
+                    Select Excel file:
+                </label>
+
+                <input
+                    type="file"
+                    name="excel_file"
+                    id="excel_file"
+                    accept=".xlsx"
+                    required
+                >
+
+                <button type="submit" class="import-btn">
+                    Upload and Import
+                </button>
+
+                <a href="{% url 'student_list' %}" class="back-btn">
+                    Back to Students
+                </a>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>
